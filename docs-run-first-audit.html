@@ -1,0 +1,390 @@
+<style>
+  :root{
+    --paper:#F4F5FA; --card:#FFFFFF; --ink:#1A1C2A; --muted:#5B5E73;
+    --line:#E3E5F0; --line-strong:#CED2E4;
+    --accent:#2E5BFF; --accent-soft:#EAEFFF; --on-accent:#FFFFFF;
+    --amber:#B26E10; --amber-soft:#FBF0DD;
+    --good:#1F8A54; --good-soft:#E4F4EB;
+    --bad:#C4423A;
+    --chrome:#EDEFF6; --chrome-line:#D9DCEA;
+    --shadow:0 1px 2px rgba(24,28,54,.05), 0 12px 30px rgba(24,28,54,.08);
+    --radius:14px;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","Roboto Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0F111B; --card:#191C2B; --ink:#ECEDF5; --muted:#9DA0B8;
+      --line:#282C42; --line-strong:#3A3F5C;
+      --accent:#7591FF; --accent-soft:#1B2244; --on-accent:#0F111B;
+      --amber:#E3A94E; --amber-soft:#2C2413;
+      --good:#4FC98A; --good-soft:#15271D;
+      --bad:#F0776E;
+      --chrome:#20233A; --chrome-line:#2E3350;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 14px 34px rgba(0,0,0,.45);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#F4F5FA; --card:#FFFFFF; --ink:#1A1C2A; --muted:#5B5E73;
+    --line:#E3E5F0; --line-strong:#CED2E4;
+    --accent:#2E5BFF; --accent-soft:#EAEFFF; --on-accent:#FFFFFF;
+    --amber:#B26E10; --amber-soft:#FBF0DD; --good:#1F8A54; --good-soft:#E4F4EB; --bad:#C4423A;
+    --chrome:#EDEFF6; --chrome-line:#D9DCEA;
+    --shadow:0 1px 2px rgba(24,28,54,.05), 0 12px 30px rgba(24,28,54,.08);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0F111B; --card:#191C2B; --ink:#ECEDF5; --muted:#9DA0B8;
+    --line:#282C42; --line-strong:#3A3F5C;
+    --accent:#7591FF; --accent-soft:#1B2244; --on-accent:#0F111B;
+    --amber:#E3A94E; --amber-soft:#2C2413; --good:#4FC98A; --good-soft:#15271D; --bad:#F0776E;
+    --chrome:#20233A; --chrome-line:#2E3350;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 14px 34px rgba(0,0,0,.45);
+  }
+
+  *{box-sizing:border-box}
+  body{background:var(--paper); color:var(--ink); font-family:var(--sans);
+    line-height:1.6; -webkit-font-smoothing:antialiased; margin:0;}
+  .wrap{max-width:820px; margin:0 auto; padding:0 22px 96px;}
+
+  /* ---- masthead ---- */
+  .top{padding:56px 0 30px; border-bottom:1px solid var(--line);}
+  .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 14px; font-weight:600;}
+  h1{font-size:clamp(30px,5.4vw,44px); line-height:1.08; letter-spacing:-.02em; font-weight:800;
+    margin:0 0 16px; text-wrap:balance;}
+  .lede{font-size:18px; color:var(--muted); max-width:60ch; margin:0;}
+  .answer{display:flex; gap:14px; align-items:flex-start; margin-top:26px; padding:16px 18px;
+    background:var(--accent-soft); border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);
+    border-radius:12px;}
+  .answer .k{font-family:var(--mono); font-size:12px; font-weight:700; color:var(--accent);
+    text-transform:uppercase; letter-spacing:.08em; white-space:nowrap; padding-top:2px;}
+  .answer p{margin:0; font-size:15.5px;}
+  .answer b{color:var(--ink);}
+
+  .facts{display:flex; flex-wrap:wrap; gap:10px; margin-top:22px;}
+  .fact{font-family:var(--mono); font-size:12.5px; color:var(--muted);
+    border:1px solid var(--line); border-radius:999px; padding:7px 13px; background:var(--card);}
+  .fact b{color:var(--ink);}
+
+  /* ---- steps ---- */
+  .step{padding:44px 0; border-bottom:1px solid var(--line);}
+  .step-head{display:flex; gap:16px; align-items:baseline;}
+  .num{font-family:var(--mono); font-weight:700; font-size:14px; color:var(--on-accent);
+    background:var(--accent); width:30px; height:30px; min-width:30px; border-radius:9px;
+    display:flex; align-items:center; justify-content:center; transform:translateY(4px);}
+  h2{font-size:24px; letter-spacing:-.01em; font-weight:750; margin:0; text-wrap:balance;}
+  .step-body{margin-top:14px;}
+  .step-body>p{margin:0 0 14px; max-width:64ch;}
+  .time{font-family:var(--mono); font-size:11.5px; color:var(--muted); text-transform:uppercase;
+    letter-spacing:.08em; margin-top:4px;}
+  ol.mini,ul.mini{margin:0 0 4px; padding-left:20px;}
+  ol.mini li,ul.mini li{margin:7px 0; max-width:62ch;}
+  code{font-family:var(--mono); font-size:.88em; background:var(--chrome);
+    border:1px solid var(--chrome-line); border-radius:6px; padding:1px 6px;}
+  a{color:var(--accent); text-decoration:none; border-bottom:1px solid color-mix(in srgb,var(--accent) 40%,transparent);}
+  a:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:3px;}
+
+  /* ---- mockup: label ---- */
+  .shot{margin:20px 0 4px;}
+  .shot-cap{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--muted); margin:0 0 8px; display:flex; align-items:center; gap:8px;}
+  .shot-cap::before{content:"▸"; color:var(--accent);}
+
+  /* ---- browser window ---- */
+  .browser{border:1px solid var(--line-strong); border-radius:12px; overflow:hidden;
+    box-shadow:var(--shadow); background:var(--card);}
+  .bbar{display:flex; align-items:center; gap:10px; padding:11px 14px; background:var(--chrome);
+    border-bottom:1px solid var(--chrome-line);}
+  .dots{display:flex; gap:6px;}
+  .dots i{width:11px; height:11px; border-radius:50%; display:block;}
+  .dots i:nth-child(1){background:#ED6A5E;} .dots i:nth-child(2){background:#F4BF4F;} .dots i:nth-child(3){background:#61C554;}
+  .url{flex:1; font-family:var(--mono); font-size:12.5px; color:var(--ink); background:var(--card);
+    border:1px solid var(--line); border-radius:7px; padding:6px 11px; overflow:hidden;
+    white-space:nowrap; text-overflow:ellipsis;}
+  .url b{color:var(--accent);}
+  .bbody{padding:16px 16px 18px;}
+  .bbody.pad0{padding:0;}
+
+  /* fake store hero inside browser */
+  .store-hero{padding:26px 20px; text-align:center; background:
+    linear-gradient(160deg,color-mix(in srgb,var(--accent) 10%,var(--card)),var(--card));}
+  .store-hero .logo{font-family:var(--mono); font-size:12px; letter-spacing:.2em; color:var(--muted); text-transform:uppercase;}
+  .store-hero h3{margin:12px 0 6px; font-size:20px;}
+  .store-hero .cta{display:inline-block; margin-top:12px; font-size:12px; font-weight:700;
+    background:var(--ink); color:var(--paper); padding:8px 16px; border-radius:7px;}
+
+  /* json */
+  .json{font-family:var(--mono); font-size:12px; line-height:1.7; background:var(--card);
+    color:var(--ink); overflow-x:auto; padding:14px 16px; white-space:pre;}
+  .json .key{color:var(--accent);} .json .str{color:var(--good);} .json .num{color:var(--amber);}
+  .selband{background:color-mix(in srgb,var(--accent) 22%,transparent);}
+
+  /* ---- keycaps ---- */
+  .keys{display:flex; flex-wrap:wrap; gap:18px; margin:8px 0 4px;}
+  .kset{display:flex; align-items:center; gap:8px;}
+  .kset .os{font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; min-width:58px;}
+  kbd{font-family:var(--mono); font-size:12.5px; font-weight:600; color:var(--ink);
+    background:linear-gradient(var(--card),var(--chrome)); border:1px solid var(--line-strong);
+    border-bottom-width:2px; border-radius:7px; padding:5px 9px; box-shadow:0 1px 0 rgba(0,0,0,.04);}
+  .plus{color:var(--muted); font-size:12px;}
+
+  /* ---- claude composer mock ---- */
+  .claude{border:1px solid var(--line-strong); border-radius:14px; box-shadow:var(--shadow);
+    background:var(--card); overflow:hidden;}
+  .claude-top{display:flex; align-items:center; gap:9px; padding:12px 15px; border-bottom:1px solid var(--line);}
+  .spark{width:18px; height:18px; border-radius:5px; background:var(--accent); display:grid; place-items:center;
+    color:var(--on-accent); font-size:11px; font-weight:800; font-family:var(--mono);}
+  .claude-top .t{font-size:13px; font-weight:650;} .claude-top .newchat{margin-left:auto; font-family:var(--mono);
+    font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:7px; padding:5px 9px;}
+  .composer{margin:16px 15px; border:1.5px solid var(--line-strong); border-radius:13px; padding:13px 14px;
+    background:var(--card);}
+  .composer .typed{font-size:13.5px; color:var(--ink);}
+  .composer .typed .muted{color:var(--muted);}
+  .attaches{display:flex; gap:9px; margin:13px 0 4px; flex-wrap:wrap;}
+  .thumb{display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11.5px; color:var(--muted);
+    border:1px solid var(--line); border-radius:9px; padding:6px 9px; background:var(--chrome);}
+  .thumb .ph{width:26px; height:20px; border-radius:4px; background:
+    linear-gradient(135deg,var(--accent-soft),color-mix(in srgb,var(--accent) 35%,var(--card))); display:block;}
+  .composer-bar{display:flex; align-items:center; margin-top:12px;}
+  .clip{font-family:var(--mono); font-size:12px; color:var(--muted); display:flex; align-items:center; gap:7px;}
+  .clip .ico{font-size:15px;}
+  .send{margin-left:auto; background:var(--accent); color:var(--on-accent); border:none; cursor:default;
+    font-family:var(--sans); font-weight:700; font-size:13px; border-radius:9px; padding:8px 15px; display:flex; gap:7px; align-items:center;}
+  .callN{position:relative;}
+
+  /* ---- claude reply mock (mini audit) ---- */
+  .reply{border:1px solid var(--line); border-radius:13px; background:var(--card); padding:16px 17px; box-shadow:var(--shadow);}
+  .reply .who{display:flex; align-items:center; gap:9px; margin-bottom:12px;}
+  .reply .who .t{font-size:12.5px; font-weight:650; color:var(--muted);}
+  .scoreline{display:flex; align-items:center; gap:13px; flex-wrap:wrap;}
+  .scorepill{font-family:var(--mono); font-weight:800; font-size:20px; color:var(--on-accent);
+    background:var(--amber); border-radius:10px; padding:6px 13px; letter-spacing:-.01em;}
+  .scoreline .band{font-weight:750; font-size:15px;}
+  .reply p.sum{font-size:13.5px; color:var(--muted); margin:11px 0 14px;}
+  .fixrow{display:flex; gap:11px; padding:11px 0; border-top:1px dashed var(--line);}
+  .fixrow .r{font-family:var(--mono); font-weight:700; font-size:12px; color:var(--accent); min-width:16px;}
+  .fixrow .b{font-size:13px;} .fixrow .b b{display:block; margin-bottom:2px;}
+  .fixrow .val{margin-left:auto; font-family:var(--mono); font-size:11.5px; color:var(--good); white-space:nowrap; align-self:center;}
+
+  /* ---- callout ---- */
+  .tip{display:flex; gap:13px; margin:20px 0 2px; padding:14px 16px; border-radius:12px;
+    background:var(--amber-soft); border:1px solid color-mix(in srgb,var(--amber) 35%,transparent);}
+  .tip.good{background:var(--good-soft); border-color:color-mix(in srgb,var(--good) 35%,transparent);}
+  .tip .tag{font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--amber); white-space:nowrap; padding-top:2px;}
+  .tip.good .tag{color:var(--good);}
+  .tip p{margin:0; font-size:14px;}
+
+  /* ---- closing ---- */
+  .end{padding:40px 0 0;}
+  .end h2{margin-bottom:10px;}
+  .checklist{list-style:none; padding:0; margin:18px 0 0;}
+  .checklist li{display:flex; gap:12px; align-items:flex-start; padding:11px 0; border-top:1px solid var(--line); font-size:15px;}
+  .checklist li .box{width:19px; height:19px; min-width:19px; border-radius:5px; border:1.5px solid var(--line-strong);
+    margin-top:3px; display:grid; place-items:center; font-size:12px; color:var(--accent); font-weight:800;}
+  .foot{margin-top:34px; font-size:13px; color:var(--muted); font-family:var(--mono); line-height:1.7;}
+
+  @media (max-width:560px){
+    .answer{flex-direction:column; gap:8px;}
+    .fixrow .val{display:none;}
+    .step-head{gap:12px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important;}}
+</style>
+
+<div class="wrap">
+
+  <header class="top">
+    <p class="eyebrow">ShiftLift · Audit Engine</p>
+    <h1>Run your first AI store audit</h1>
+    <p class="lede">No installing. No code. You'll do the whole thing in your web browser in about 15 minutes — this walks you through every click and shows you what each screen looks like.</p>
+
+    <div class="answer">
+      <span class="k">Where&nbsp;it&nbsp;runs</span>
+      <p>Two browser tabs, that's it. <b>Tab 1:</b> the store you're auditing. <b>Tab 2:</b> <b>claude.ai</b> — a free Claude account, the same kind of chat you're talking to right now. You copy a few things from Tab 1, paste them into Tab 2, and Claude writes the report. Nothing gets downloaded to your computer except the finished PDF.</p>
+    </div>
+
+    <div class="facts">
+      <span class="fact">⏱ <b>~15 min</b> per audit</span>
+      <span class="fact">💵 Cost: <b>$0</b> (free Claude account)</span>
+      <span class="fact">🧰 You need: <b>Chrome + claude.ai</b></span>
+      <span class="fact">🎯 Do <b>2–3 practice</b> stores first</span>
+    </div>
+  </header>
+
+  <!-- STEP 1 -->
+  <section class="step">
+    <div class="step-head"><span class="num">1</span><h2>Pick a store to audit</h2></div>
+    <div class="step-body">
+      <p class="time">2 minutes</p>
+      <p>For practice, grab any small Shopify store. Easiest source: scroll Instagram or TikTok until you hit a product ad, tap through to the store. Stores running ads have real traffic — which is exactly who needs an audit (and who'll pay for one).</p>
+      <div class="shot">
+        <p class="shot-cap">What you'll have open in Tab 1</p>
+        <div class="browser">
+          <div class="bbar"><span class="dots"><i></i><i></i><i></i></span>
+            <span class="url">https://<b>ember-and-oak.com</b></span></div>
+          <div class="bbody pad0"><div class="store-hero">
+            <div class="logo">Ember &amp; Oak</div>
+            <h3>Hand-poured soy candles</h3>
+            <span class="cta">Shop now</span>
+          </div></div>
+        </div>
+      </div>
+      <div class="tip"><span class="tag">How to tell</span><p>It's a Shopify store if adding <code>/products.json</code> to the end of the web address (next step) shows a wall of text instead of an error. Most product brands you see advertised are on Shopify.</p></div>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step">
+    <div class="step-head"><span class="num">2</span><h2>Copy the store's product list</h2></div>
+    <div class="step-body">
+      <p class="time">2 minutes</p>
+      <ol class="mini">
+        <li>Click the web address bar at the top of the browser.</li>
+        <li>Type the store address followed by <code>/products.json</code> and press Enter — e.g. <code>ember-and-oak.com/products.json</code></li>
+        <li>You'll see a screen full of code-looking text. <b>Don't panic</b> — you don't read it. Just select all of it (<kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>A</kbd>) and copy it (<kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>C</kbd>).</li>
+      </ol>
+      <div class="shot">
+        <p class="shot-cap">What you'll see (the highlighted part = selected &amp; copied)</p>
+        <div class="browser">
+          <div class="bbar"><span class="dots"><i></i><i></i><i></i></span>
+            <span class="url">ember-and-oak.com<b>/products.json</b></span></div>
+          <div class="bbody pad0"><div class="json"><span class="selband">{ <span class="key">"products"</span>: [
+  { <span class="key">"title"</span>: <span class="str">"Cedar Smoke Candle 8oz"</span>,
+    <span class="key">"price"</span>: <span class="str">"28.00"</span>, <span class="key">"images"</span>: <span class="num">4</span> },
+  { <span class="key">"title"</span>: <span class="str">"Vanilla Oak Candle 8oz"</span>,
+    <span class="key">"price"</span>: <span class="str">"28.00"</span>, <span class="key">"images"</span>: <span class="num">3</span> },
+  { <span class="key">"title"</span>: <span class="str">"Wick Trimmer"</span>,
+    <span class="key">"price"</span>: <span class="str">"12.00"</span>, <span class="key">"images"</span>: <span class="num">1</span> } ] }</span></div></div>
+        </div>
+      </div>
+      <div class="tip good"><span class="tag">That's it</span><p>This text is just the store's product list — names, prices, how many photos each has. Claude reads it so it can judge the catalog. You've now got it on your clipboard; hold onto it for Step 5.</p></div>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="step">
+    <div class="step-head"><span class="num">3</span><h2>Screenshot two pages</h2></div>
+    <div class="step-body">
+      <p class="time">3 minutes</p>
+      <p>Take a picture of the screen for <b>(a)</b> the store's homepage and <b>(b)</b> one product page (click any product first). Save both to your desktop — you'll attach them in Step 5.</p>
+      <div class="keys">
+        <div class="kset"><span class="os">Mac</span><kbd>⌘</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>4</kbd><span class="plus">then drag</span></div>
+        <div class="kset"><span class="os">Windows</span><kbd>⊞ Win</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>S</kbd><span class="plus">then drag</span></div>
+      </div>
+      <div class="tip"><span class="tag">Pro move</span><p>Also snap the product page on your <b>phone</b> — most store traffic is mobile, and half your findings live there (like a buy button that scrolls away). One extra screenshot, much sharper audit.</p></div>
+    </div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="step">
+    <div class="step-head"><span class="num">4</span><h2>Open Claude &amp; start a new chat</h2></div>
+    <div class="step-body">
+      <p class="time">1 minute</p>
+      <p>In a new tab go to <a href="https://claude.ai">claude.ai</a> and sign in (free account is fine). Click <b>New chat</b>. This is the exact box you'll be typing into:</p>
+      <div class="shot">
+        <p class="shot-cap">The Claude screen — Tab 2</p>
+        <div class="claude">
+          <div class="claude-top"><span class="spark">C</span><span class="t">Claude</span><span class="newchat">+ New chat</span></div>
+          <div class="composer">
+            <div class="typed"><span class="muted">Reply to Claude…</span></div>
+            <div class="composer-bar">
+              <span class="clip"><span class="ico">📎</span> attach files here</span>
+              <button class="send" tabindex="-1">Send ↑</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 5 -->
+  <section class="step">
+    <div class="step-head"><span class="num">5</span><h2>Paste the prompt, attach screenshots, hit Send</h2></div>
+    <div class="step-body">
+      <p class="time">2 minutes</p>
+      <ol class="mini">
+        <li>Open the file <code>audit-engine/prompts/00-one-shot-simple.md</code> and copy everything in it.</li>
+        <li>Paste it into the Claude box. Fill in the store's web address where it says <code>{{PASTE STORE URL}}</code>, and paste your product-list text (from Step 2) where it says <code>{{PASTE THE JSON}}</code>.</li>
+        <li>Click the <b>📎 paperclip</b> and attach your two (or three) screenshots.</li>
+        <li>Press <b>Send</b>.</li>
+      </ol>
+      <div class="shot">
+        <p class="shot-cap">What the box looks like right before you hit Send</p>
+        <div class="claude">
+          <div class="composer">
+            <div class="typed">You are a senior Shopify conversion expert writing a paid store audit. I'll give you a store's screenshots and product data. Produce a complete, prioritized audit report. <span class="muted">Store URL: ember-and-oak.com … Score the store 0–100 across these 47 points …</span></div>
+            <div class="attaches">
+              <span class="thumb"><span class="ph"></span> homepage.png</span>
+              <span class="thumb"><span class="ph"></span> product-page.png</span>
+              <span class="thumb"><span class="ph"></span> mobile.png</span>
+            </div>
+            <div class="composer-bar">
+              <span class="clip"><span class="ico">📎</span> 3 files attached</span>
+              <button class="send" tabindex="-1">Send ↑</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tip good"><span class="tag">One paste</span><p>The <code>00-one-shot-simple</code> prompt does the whole audit in a single message — you don't run three separate steps. Everything Claude needs (the 47-point checklist, the scoring, the report format) is baked into that one file.</p></div>
+    </div>
+  </section>
+
+  <!-- STEP 6 -->
+  <section class="step">
+    <div class="step-head"><span class="num">6</span><h2>Read what Claude gives back</h2></div>
+    <div class="step-body">
+      <p class="time">1 minute to read</p>
+      <p>In a few seconds Claude writes the full report right in the chat: a score, the biggest leaks, and exactly what to fix. It'll look like this:</p>
+      <div class="shot">
+        <p class="shot-cap">Claude's reply</p>
+        <div class="reply">
+          <div class="who"><span class="spark">C</span><span class="t">Claude</span></div>
+          <div class="scoreline"><span class="scorepill">58/100</span><span class="band">Leaking — real revenue lost daily</span></div>
+          <p class="sum">Your photography beats most candle stores, but your product page hides the two things buyers need most — shipping cost and reviews — and your mobile buy button scrolls away. Fixing the top 3 is conservatively worth $540–$1,350/mo.</p>
+          <div class="fixrow"><span class="r">1</span><span class="b"><b>Mobile buy button disappears on scroll</b>Add sticky add-to-cart — a checkbox in the theme, 5 min.</span><span class="val">+$180–450/mo</span></div>
+          <div class="fixrow"><span class="r">2</span><span class="b"><b>Shipping cost is a checkout surprise</b>State "Free shipping over $45" under the price.</span><span class="val">+$250–600/mo</span></div>
+          <div class="fixrow"><span class="r">3</span><span class="b"><b>214 reviews, none near the buy box</b>Turn on the star badge by the title.</span><span class="val">+$110–300/mo</span></div>
+        </div>
+      </div>
+      <div class="tip"><span class="tag">Compare</span><p>Open <code>audit-engine/sample-output/DEMO-audit-ember-and-oak.md</code> — that's a full finished report. Yours should come out looking just like it.</p></div>
+    </div>
+  </section>
+
+  <!-- STEP 7 -->
+  <section class="step">
+    <div class="step-head"><span class="num">7</span><h2>Fact-check every finding</h2></div>
+    <div class="step-body">
+      <p class="time">5 minutes — this is the part that makes it worth $297</p>
+      <p>Put the store and the report side by side. For every issue Claude names, confirm you can actually see it on the real store. If you can't find it, delete that line. AI is fast but occasionally confident and wrong — <b>you</b> are the quality check, and that's exactly what the client is paying for.</p>
+      <div class="tip"><span class="tag">Rule</span><p>Nothing ships in a paid report unless you've seen it with your own eyes on the live store. Screenshot each of your top-3 findings so the client can see it too.</p></div>
+    </div>
+  </section>
+
+  <!-- STEP 8 -->
+  <section class="step">
+    <div class="step-head"><span class="num">8</span><h2>Save as PDF — done</h2></div>
+    <div class="step-body">
+      <p class="time">2 minutes</p>
+      <ul class="mini">
+        <li><b>Practice run:</b> just keep it. Turn the juiciest finding into your first teardown video (see <code>content-kit/</code>).</li>
+        <li><b>Paid run:</b> paste the cleaned report into a Google Doc → <code>File → Download → PDF</code>, then email it to the client.</li>
+      </ul>
+      <div class="tip good"><span class="tag">That's the whole job</span><p>Two tabs, copy a couple things, paste, fact-check, send. Once you've done it twice it takes ~15 minutes — and that 15 minutes is a $297 deliverable.</p></div>
+    </div>
+  </section>
+
+  <!-- CLOSE -->
+  <section class="end">
+    <h2>Your very first run — do this now</h2>
+    <ul class="checklist">
+      <li><span class="box">✓</span><span>Create a free account at <a href="https://claude.ai">claude.ai</a> if you don't have one.</span></li>
+      <li><span class="box">✓</span><span>Pick one small store you saw advertised this week.</span></li>
+      <li><span class="box">✓</span><span>Copy its <code>/products.json</code> and screenshot 2 pages (Steps 2–3).</span></li>
+      <li><span class="box">✓</span><span>Paste the <code>00-one-shot-simple</code> prompt + screenshots into Claude (Steps 4–5).</span></li>
+      <li><span class="box">✓</span><span>Fact-check, and compare against the demo report.</span></li>
+    </ul>
+    <p class="foot">ShiftLift LLC · Audit Engine · Do 2–3 practice stores before charging.<br>Files referenced live in the repo: audit-engine/ · content-kit/ · offer/</p>
+  </section>
+
+</div>
